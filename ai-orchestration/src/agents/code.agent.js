@@ -13,11 +13,4 @@ const agent = createAgent({
     tools: [listFiles, readFile, updateFile],
 })
 
-await agent.invoke({
-    messages: [
-        {
-            role: "user",
-            content: "create a simple calculator app with the help of react and make sure make it good all function are working.once user enter input and click button for result then after if user contiue his calculation then do calculation on currnt numbers which he give untill user clear the result. "
-        }
-    ]
-})
+export default agent;
