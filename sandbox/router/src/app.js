@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import {createProxyMiddleware} from "http-proxy-middleware"
+import http from "http";
 
 const app = express()
 app.use(morgan('combined'))
@@ -32,6 +33,7 @@ function getProxy(sandboxId){
 
     return proxies[sandboxId];
 }
+
 function getAgentProxy(sandboxId){
 
     const target = `http://sandbox-service-${sandboxId}:3000`;
@@ -56,6 +58,27 @@ app.use((req,res,next)=>{
     }else if(host.split('.')[1] === 'preview'){
         return getProxy(sandboxId)(req,res,next); 
     }
-})
+});
 
-export default app
+
+const server = http.createServer(app);
+
+server.on('upgrade', (req, socket, head) => {
+    const host = req.headers.host;
+    const sandboxId = host.split(".")[0];
+    const type = host.split(".")[1];
+
+    console.log(`WS Upgrade request:${host}, sandboxId: ${sandboxId}, type: ${type}`);
+
+    if(type === 'agent'){
+        const proxy = getAgentProxy(sandboxId);
+        proxy.upgrade(req, socket, head);
+    }else if(type === 'preview'){
+        const proxy = getProxy(sandboxId);
+        proxy.upgrade(req, socket, head);
+    }else{
+        socket.destroy();
+    }
+});
+
+export default server;
