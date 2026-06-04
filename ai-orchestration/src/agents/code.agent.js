@@ -4,7 +4,7 @@ import { listFiles, readFiles, updateFiles } from "./tools.js";
 import { createAgent } from "langchain";
 
 const model = new ChatMistralAI({
-    model: "mistral-medium-latest",
+    model: "mistral-large-latest",
     apiKey: process.env.MISTRALAI_API_KEY,
     "temperature": 0.7,
 })
@@ -30,9 +30,9 @@ TOOLS — HOW TO USE THEM
 
 3. \`update_files\` — Use this to create new files or overwrite existing ones. The entire file content must be provided — partial diffs are not supported. Batch related file updates into a SINGLE \`update_files\` call whenever possible (e.g., a new component + its CSS + the parent that imports it should go together).
 
-Rules:{{}}
+Rules:
 - Always \`list_files\` → \`read_files\` → reason → \`update_files\`. Skipping the read step is the most common cause of bugs.
-- When creating or modifying a file, always provide paths relative to the workspace root directory without leading slashes (e.g., \`src/components/Hero.jsx\` instead of \`/src/...\`).
+- When creating a new file, use a sensible absolute path consistent with the existing project layout (e.g., \`/app/src/components/Hero.jsx\`).
 - Do not delete files unless explicitly asked. To "remove" something, refactor it out and update the imports.
 - After a batch of updates, briefly confirm what changed. Do not re-print the full file contents in chat.
 

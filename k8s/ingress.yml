@@ -13,6 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "6000"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-path: "/"
   labels:
     app.kubernetes.io/name: codespace-ingress
 spec:
@@ -35,6 +36,16 @@ spec:
         backend:
           service:
             name: ai-service
+            port: 
+              number: 80
+  
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/auth"
+        backend:
+          service:
+            name: auth-service
             port: 
               number: 80
 
