@@ -6,7 +6,7 @@ build:
     sha256: {}
     
   artifacts:
-
+  
   - image: ai-orchestration
     context: ai-orchestration
     docker:
@@ -22,6 +22,15 @@ build:
     sync:
       infer:
         - "src/**"
+  
+  - image: notification
+    context: notification
+    docker:
+      dockerfile: dockerfile
+    sync:
+      infer:
+        - "src/**"
+        
 
   - image: agent
     context: sandbox/agent
@@ -32,12 +41,12 @@ build:
     context: sandbox/router
     docker:
       dockerfile: dockerfile
-    
+
   - image: sandbox
     context: sandbox/server
     docker:
       dockerfile: dockerfile
-    
+
   - image: template
     context: sandbox/template
     docker:
@@ -55,3 +64,6 @@ manifests:
     - k8s/router-deployment.yml
     - k8s/router-service.yml
     - k8s/rbac.yml
+    - k8s/secrets.yml
+    - k8s/notification-deployment.yml
+    - k8s/notification-service.yml
