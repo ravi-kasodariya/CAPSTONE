@@ -15,7 +15,7 @@ spec:
         app:  notification
     spec:
       containers:
-      - image:  notification
+      - image:  951472954050.dkr.ecr.eu-west-2.amazonaws.com/notification
         name:  notification-server
         resources:
           requests:

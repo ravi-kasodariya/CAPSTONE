@@ -15,7 +15,7 @@ spec:
         app: auth
     spec:
       containers:
-      - image:  auth
+      - image:  951472954050.dkr.ecr.eu-west-2.amazonaws.com/auth
         imagePullPolicy: IfNotPresent
         name:  auth-container
         resources:
